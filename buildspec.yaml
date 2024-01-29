@@ -1,0 +1,20 @@
+version: 0.2
+phases:
+ install:
+     runtime-versions:
+         java: corretto17
+ pre_buiild:
+     commands:
+     - echo In pre_buiild phase
+     - mvn test
+ build:
+     commands:
+     - echo In build phase
+     - mvn package -DskipTests=true
+ post_build:
+     commands:
+     - echo In post_build phase
+ artifacts:
+ files:
+ - target/*.jar
+ discard-paths: yes
