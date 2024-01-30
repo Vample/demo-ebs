@@ -12,7 +12,6 @@ pipeline {
     }
 
     stages {
-        
         stage('Build') {
             steps {
                 echo "--====-- Building App --====--"
@@ -20,22 +19,25 @@ pipeline {
                 archive 'target/*.jar'
             }
         }
+
         stage('Test') {
             steps {
                 echo "--====-- Testing App --====--"
                 sh 'mvn test'
             }
             post {
-            always {
-              junit 'target/surefire-reports/*.xml'
-              jacoco execPattern: 'target/jacoco.exec'
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                    jacoco execPattern: 'target/jacoco.exec'
+                }
+                success {
+                    sh 'aws configure set region eu-west-3'
+                    echo '--====-- Deploying App --===--'
+                    sh 'aws s3 cp ./target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
+                }
             }
-            success {
-                sh 'aws configure set region eu-west-3'
-                echo '--====-- Deploying App --===--'
-                sh ' aws s3 cp ./target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
-          }
         }
+
         stage('Deploy') {
             steps {
                 echo "--====-- Deploying App --====--"
