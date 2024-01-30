@@ -39,9 +39,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "--====-- Deploying App --====--"
-                sh 'aws --version'
-                sh 'aws configure set region eu-west-3'
-                sh 'aws s3 ls'
+                sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$ARTIFACT_NAME'
             }
         }
     }
