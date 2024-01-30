@@ -6,6 +6,9 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret')
         AWS_S3_BUCKET = 'bucket-demo-ebs-1'
         ARTIFACT_NAME = 'demo-ebs.jar'
+        AWS_EB_APP_NAME = 'demo-ebs-app'
+        AWS_EB_ENVIRONMENT = 'demo-ebs-app-env'
+        AWS_EB_APP_VERSION = "${BUILD_ID}"
     }
 
     stages {
