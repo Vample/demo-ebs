@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environement {
+        AWS_ACCESS_KEY_ID = credentials('jenkins-aws-id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret')
+    }
+
     stages {
         
         stage('Build') {
@@ -25,6 +30,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "--====-- Deploying App --====--"
+                sh 'aws --version'
+                sh 'aws configure set region eu-west-3'
+                sh 'aws s3 ls'
             }
         }
     }
