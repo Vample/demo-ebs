@@ -30,7 +30,7 @@ pipeline {
             success {
                 sh 'aws configure set region eu-west-3'
                 echo '--====-- Deploying App --===--'
-                sh './target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
+                sh ' aws s3 cp ./target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
           }
         }
         stage('Deploy') {
