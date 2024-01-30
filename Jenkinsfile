@@ -27,6 +27,10 @@ pipeline {
               junit 'target/surefire-reports/*.xml'
               jacoco execPattern: 'target/jacoco.exec'
             }
+            success {
+                sh 'aws configure set region eu-west-3'
+                echo '--====-- Deploying App --===--'
+                sh './target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
           }
         }
         stage('Deploy') {
